@@ -8,6 +8,26 @@
 
 ---
 
+## ⚠️ IMPORTANT: DEMO PURPOSES ONLY
+
+**This project is for demonstration and educational purposes only.**
+
+**LinkedIn explicitly prohibits automated scraping and data collection from its platform.** Using this tool to scrape LinkedIn profiles violates LinkedIn's [User Agreement](https://www.linkedin.com/legal/user-agreement) and [Terms of Service](https://www.linkedin.com/legal/professional-community-policies).
+
+This code demonstrates:
+- Browser automation techniques with Playwright
+- AI-powered content analysis with GPT models
+- Authentication handling and session management
+
+**DO NOT use this tool for actual LinkedIn data collection.** Doing so may result in:
+- Account suspension or permanent ban
+- Legal action from LinkedIn
+- Violation of data protection laws (GDPR, CCPA, etc.)
+
+If you need LinkedIn data for legitimate purposes, use [LinkedIn's official APIs](https://developer.linkedin.com/) or contact LinkedIn directly.
+
+---
+
 ## The Problem
 
 Recruiters face an overwhelming number of fake candidate profiles on LinkedIn. Manually reviewing thousands of profiles to identify red flags is:
@@ -401,17 +421,33 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Disclaimer
 
-⚠️ **Important Legal Notice**
+⚠️ **CRITICAL LEGAL NOTICE**
 
-This tool is for educational and legitimate recruitment purposes only. Users must:
+**THIS PROJECT IS FOR DEMONSTRATION AND EDUCATIONAL PURPOSES ONLY.**
 
-- Comply with LinkedIn's Terms of Service
-- Respect privacy laws and regulations (GDPR, CCPA, etc.)
-- Obtain appropriate consent where required
-- Use responsibly and ethically
-- Not use for harassment, discrimination, or illegal purposes
+**LinkedIn prohibits web scraping and automated data collection.** This tool violates LinkedIn's Terms of Service and should **NOT** be used to scrape LinkedIn profiles in any production or commercial capacity.
 
-The authors are not responsible for misuse of this tool. Fake profile detection is probabilistic - always verify findings through additional methods.
+This code is provided solely to demonstrate:
+- Technical implementation of browser automation
+- AI-powered content analysis patterns
+- Authentication flow handling
+- Educational programming concepts
+
+**By using this code, you acknowledge that:**
+
+- **LinkedIn does NOT allow data scraping** from its platform
+- Using this tool for actual data collection **violates LinkedIn's Terms of Service**
+- You may face **account termination, legal action, and other consequences**
+- The authors assume **NO responsibility or liability** for any misuse
+- For legitimate LinkedIn data access, use [LinkedIn's official APIs](https://developer.linkedin.com/)
+
+**Users must:**
+- Use this ONLY for learning and demonstration in controlled environments
+- NEVER deploy this against LinkedIn's production website
+- Respect all applicable laws including GDPR, CCPA, and CFAA
+- Understand that automated profile detection is probabilistic and not definitive
+
+**The authors explicitly disclaim all responsibility for misuse of this tool.**
 
 ---
 
