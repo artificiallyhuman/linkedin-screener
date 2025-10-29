@@ -1,0 +1,8 @@
+# Example candidates list for batch processing
+# Add one LinkedIn profile URL per line
+# Lines starting with # are ignored
+
+# Example profiles (replace with actual candidate URLs)
+# https://www.linkedin.com/in/candidate1
+# https://www.linkedin.com/in/candidate2
+# https://www.linkedin.com/in/candidate3

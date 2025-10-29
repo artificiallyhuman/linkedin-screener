@@ -42,6 +42,11 @@ venv/
 profile_*.txt
 !example_profile.txt
 
+# Candidate lists and results
+candidates.txt
+results.txt
+*.log
+
 # OS
 .DS_Store
 Thumbs.db
