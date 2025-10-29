@@ -1,0 +1,46 @@
+John Doe
+Software Engineer at TechCorp
+San Francisco Bay Area · 500+ connections
+
+About
+Experienced software engineer with 5+ years of developing scalable web applications. Passionate about clean code and best practices.
+
+Experience
+
+Software Engineer
+TechCorp
+Jan 2020 - Present · 3 yrs
+San Francisco, CA
+- Developed microservices architecture serving 1M+ users
+- Led team of 4 engineers on customer-facing features
+- Technologies: Python, React, AWS
+
+Junior Developer
+StartupXYZ
+Jun 2018 - Dec 2019 · 1 yr 7 mos
+Remote
+- Built REST APIs and frontend components
+- Contributed to open-source projects
+
+Education
+
+Bachelor of Science - Computer Science
+State University
+2014 - 2018
+
+Skills
+Python · JavaScript · React · Node.js · AWS · Docker · Git
+
+Certifications
+AWS Certified Developer - Associate
+Amazon Web Services (AWS)
+Issued Jan 2021
+
+Recommendations
+3 people have recommended John
+
+---
+NOTE: This is an example file. Replace this content with actual LinkedIn profile text by:
+1. Opening the profile in your browser
+2. Selecting all text (Cmd+A or Ctrl+A)
+3. Copying and pasting into a text file
