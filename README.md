@@ -27,9 +27,16 @@ This tool automates fake profile detection using:
 ## Features
 
 ✅ **Direct LinkedIn Scraping** - Uses Playwright to access profiles like a real browser
-✅ **GPT-5 Powered Analysis** - Creates custom detection framework and evaluates profiles
-✅ **Comprehensive Reports** - Risk assessment, red flags, authenticity signals
+✅ **Auto-Login** - Automatically uses credentials from environment variables, no flags needed
+✅ **LinkedIn Authentication** - Login support for reliable access to profiles
+✅ **Two-Factor Authentication** - Automatic 2FA detection with interactive code entry in terminal
+✅ **Persistent Sessions** - Login once, use many times (saved locally at `~/.linkedin_scanner/`)
+✅ **Auto-Retry Logic** - Automatically retries failed scrapes with smart fallbacks
+✅ **GPT-5 Powered Analysis** - AI creates custom detection framework and evaluates profiles
+✅ **Formatted Reports** - Color-coded terminal output with candidate name in header
+✅ **Comprehensive Analysis** - Risk assessment, red flags, authenticity signals, recommendations
 ✅ **Multiple Input Methods** - Automated scraping, manual text input, or visible browser
+✅ **Debug Mode** - Screenshots on failure, verbose logging, visible browser option
 ✅ **Flexible Model Support** - Works with GPT-5, GPT-4o, or other OpenAI models
 ✅ **Terminal-Based** - Fast, scriptable, perfect for batch processing
 
@@ -57,15 +64,27 @@ export OPENAI_API_KEY='your-api-key-here'
 ### Basic Usage
 
 ```bash
-# Analyze a LinkedIn profile
+# Set up LinkedIn credentials (one-time setup)
+export LINKEDIN_EMAIL='your-email@example.com'
+export LINKEDIN_PASSWORD='your-password'
+
+# Analyze a LinkedIn profile - login happens automatically!
 python linkedin_scanner.py https://www.linkedin.com/in/username
 
-# Show browser window (useful for debugging/login)
+# The script will automatically prompt for your 2FA code if enabled:
+#   ============================================================
+#   ENTER YOUR TWO-FACTOR AUTHENTICATION CODE
+#   ============================================================
+#   Enter 2FA code: 123456
+
+# Show browser window (useful for debugging)
 python linkedin_scanner.py https://www.linkedin.com/in/username --show-browser
 
 # Use manual text input (fallback method)
 python linkedin_scanner.py https://www.linkedin.com/in/username --text-file profile.txt
 ```
+
+**Note:** If `LINKEDIN_EMAIL` and `LINKEDIN_PASSWORD` are set, login happens automatically - no `--login` flag needed!
 
 ---
 
@@ -117,54 +136,67 @@ LINKEDIN PROFILE FAKE CANDIDATE DETECTOR
 Analyzing profile: https://www.linkedin.com/in/john-smith-dev
 
 Step 1: Scraping LinkedIn profile with Playwright...
+   (Using LinkedIn authentication)
    Loading page...
+   ✓ Extracted 4,523 characters from main content
 ✓ Profile data collected
 
 Step 2: Analyzing profile with gpt-5...
 ✓ Analysis complete
 
 ================================================================================
-ANALYSIS REPORT
+ANALYSIS REPORT: John Smith
 ================================================================================
 
-EVALUATION FRAMEWORK:
-- Account age and creation indicators
-- Profile completeness and detail quality
-- Employment history timeline verification
-- Education and credential validation
-- Network size and engagement patterns
-- Content originality vs template usage
+============================================================
+RISK ASSESSMENT
+============================================================
+High - Multiple indicators suggest this may be a fraudulent profile
 
-RISK ASSESSMENT: HIGH
+----------------------------------------
+RED FLAGS
+----------------------------------------
+  • Profile created within last 30 days
+  • Generic job descriptions with minimal detail
+  • No recommendations or endorsements
+  • Suspiciously low connection count (<50)
+  • No activity history (posts, comments, likes)
+  • Stock photo potentially used for profile picture
 
-KEY RED FLAGS IDENTIFIED:
-1. Profile created within last 30 days
-2. Generic job descriptions with minimal detail
-3. No recommendations or endorsements
-4. Suspiciously low connection count (<50)
-5. No activity history (posts, comments, likes)
-6. Stock photo potentially used for profile picture
+----------------------------------------
+POSITIVE SIGNALS
+----------------------------------------
+  • Email and phone number listed
+  • Education section completed
+  • Company names appear legitimate
 
-POSITIVE AUTHENTICITY SIGNALS:
-- Email and phone number listed
-- Education section completed
+----------------------------------------
+RECOMMENDATIONS
+----------------------------------------
+  • Request video interview to verify identity
+  • Check references independently
+  • Verify employment with HR contacts at listed companies
+  • Request additional documentation (LinkedIn PDF export, resume)
+  • Reverse image search the profile photo
 
-CONCERNS & RECOMMENDATIONS:
-- Account age is a major concern - newly created profiles are often fake
-- Request additional verification before proceeding
-- Consider video interview to verify identity
-- Check references independently
-
-OVERALL CONCLUSION:
+============================================================
+CONCLUSION
+============================================================
 This profile exhibits multiple characteristics common to fake candidates.
 The combination of new account age, generic content, and lack of engagement
 suggests a high probability of fraudulent profile. Recommend thorough
 verification before continuing recruitment process.
 
-Confidence Level: 85%
+Confidence: 85%
 
 ================================================================================
 ```
+
+**Note:** Output includes color-coding in terminal:
+- Risk levels: Low (green), Medium (yellow), High (red)
+- Section headers in cyan
+- Bullet points in green
+- Clean, easy-to-scan format
 
 ---
 
@@ -172,8 +204,13 @@ Confidence Level: 85%
 
 ```
 usage: linkedin_scanner.py [-h] [--api-key API_KEY] [--text-file TEXT_FILE]
-                           [--show-browser] [--model MODEL]
+                           [--show-browser] [--login] [--no-session]
+                           [--retries RETRIES] [--model MODEL]
                            url
+
+Analyze LinkedIn profiles for fake candidate detection using GPT-5.
+
+Note: Automatically uses LinkedIn login if LINKEDIN_EMAIL and LINKEDIN_PASSWORD are set.
 
 positional arguments:
   url                   LinkedIn profile URL to analyze
@@ -183,26 +220,36 @@ options:
   --api-key API_KEY     OpenAI API key (defaults to OPENAI_API_KEY env var)
   --text-file TEXT_FILE Text file containing profile data (bypasses scraping)
   --show-browser        Show browser window during scraping
+  --login               Require LinkedIn login (error if credentials not set)
+                        By default, login is automatic if credentials are set
+  --no-session          Don't use persistent browser session (login fresh each time)
+  --retries RETRIES     Number of retry attempts for scraping (default: 2)
   --model MODEL         OpenAI model to use (default: gpt-5)
 ```
 
 ### Examples
 
 ```bash
-# Basic analysis
+# Basic analysis (auto-login if credentials are set)
 python linkedin_scanner.py https://www.linkedin.com/in/candidate
+
+# With more retries for flaky connections
+python linkedin_scanner.py https://www.linkedin.com/in/candidate --retries 5
 
 # Use specific model
 python linkedin_scanner.py https://www.linkedin.com/in/candidate --model gpt-4o
 
-# Provide API key explicitly
-python linkedin_scanner.py https://www.linkedin.com/in/candidate --api-key sk-xxx
+# Debug mode - see what's happening
+python linkedin_scanner.py https://www.linkedin.com/in/candidate --show-browser
 
-# Manual text input (if scraping fails)
+# Manual text input (fallback if scraping fails)
 python linkedin_scanner.py https://www.linkedin.com/in/candidate --text-file profile.txt
 
-# Show browser for debugging
-python linkedin_scanner.py https://www.linkedin.com/in/candidate --show-browser
+# Don't save session (more private, slower)
+python linkedin_scanner.py https://www.linkedin.com/in/candidate --no-session
+
+# Require login (error if credentials not set)
+python linkedin_scanner.py https://www.linkedin.com/in/candidate --login
 ```
 
 ---
@@ -212,13 +259,17 @@ python linkedin_scanner.py https://www.linkedin.com/in/candidate --show-browser
 To analyze multiple candidates:
 
 ```bash
+# Set up credentials (one-time)
+export LINKEDIN_EMAIL='your-email@example.com'
+export LINKEDIN_PASSWORD='your-password'
+
 # Create a file with LinkedIn URLs (one per line)
 cat candidates.txt
 https://www.linkedin.com/in/candidate1
 https://www.linkedin.com/in/candidate2
 https://www.linkedin.com/in/candidate3
 
-# Process all profiles
+# Process all profiles - auto-login happens on first profile
 while read url; do
   echo "Analyzing: $url"
   python linkedin_scanner.py "$url" >> results.txt
@@ -226,16 +277,23 @@ while read url; do
 done < candidates.txt
 ```
 
+**Pro tip:** With credentials set, the first profile logs you in automatically, and subsequent profiles use the saved session - making batch processing fast and seamless!
+
 ---
 
 ## Important Considerations
 
 ### LinkedIn Access
 
-- **Public Profiles**: Works best with publicly viewable profiles
-- **Login Required**: Use `--show-browser` to manually log in if needed
-- **Rate Limiting**: LinkedIn may block rapid requests - add delays between scans
+- **Auto-Login**: Just set `LINKEDIN_EMAIL` and `LINKEDIN_PASSWORD` - login happens automatically, no flags needed!
+- **Two-Factor Authentication**: Fully supported! Script will prompt for your 2FA code automatically
+  - Works with SMS codes, authenticator apps (Google Authenticator, Authy), and email codes
+  - Code entry happens in terminal - no need to use browser
+- **Session Persistence**: Login saved to `~/.linkedin_scanner/` - login once, use many times
+- **Public Profiles**: Works without login but may have limited access
+- **Rate Limiting**: Add 5-10 second delays between profiles to avoid blocks
 - **Terms of Service**: Review LinkedIn's TOS before large-scale scraping
+- **Other Verification**: If LinkedIn asks for CAPTCHA, use `--show-browser` to complete manually
 
 ### OpenAI API
 
@@ -287,10 +345,34 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-**Problem: LinkedIn blocking scraping**
-- Use `--show-browser` flag
-- Add delays between requests
-- Use `--text-file` for manual input
+**Problem: LinkedIn blocking scraping or "No content extracted"**
+- Set LinkedIn credentials in environment variables (most effective!)
+  ```bash
+  export LINKEDIN_EMAIL='your-email@example.com'
+  export LINKEDIN_PASSWORD='your-password'
+  ```
+- Use `--show-browser` to see what's happening
+- Increase retries: `--retries 5`
+- Add delays between requests (5-10 seconds)
+- Check debug screenshot saved to current directory
+- Use `--text-file` for manual input as fallback
+
+**Problem: Login failed**
+- Verify credentials are set: `echo $LINKEDIN_EMAIL`
+- Use `--show-browser` to see login process
+- If 2FA is enabled, make sure to enter the code when prompted
+- Complete other verification manually if LinkedIn asks
+- Try again after a few minutes
+
+**Problem: 2FA code not working**
+- Make sure you're entering the code quickly (they expire in 30-60 seconds)
+- Double-check you copied the entire code
+- Try using `--show-browser` to see if there are additional prompts
+- Some authenticator apps may have time sync issues - check your device time
+
+**Problem: Session expired or "Not logged in"**
+- Clear session: `rm -rf ~/.linkedin_scanner/browser_data/`
+- Run script again - it will auto-login with your credentials
 
 **Problem: OpenAI API errors**
 - Verify API key is set: `echo $OPENAI_API_KEY`

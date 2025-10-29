@@ -47,6 +47,10 @@ candidates.txt
 results.txt
 *.log
 
+# Debug files
+debug_screenshot_*.png
+*.png
+
 # OS
 .DS_Store
 Thumbs.db
