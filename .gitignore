@@ -51,6 +51,13 @@ results.txt
 debug_screenshot_*.png
 *.png
 
+# Browser session data (contains login cookies/tokens)
+browser_data/
+.linkedin_scanner/
+
+# Claude Code
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db

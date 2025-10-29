@@ -419,7 +419,6 @@ The authors are not responsible for misuse of this tool. Fake profile detection 
 
 - 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/linkedin-fake-candidate-detector/issues)
 - 💡 **Feature Requests**: Open an issue with the "enhancement" label
-- 📧 **Contact**: your.email@example.com
 
 ---
 
